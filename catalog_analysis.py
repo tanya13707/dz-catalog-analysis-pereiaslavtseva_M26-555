@@ -114,10 +114,22 @@ def format_report_line(movie):
     )
 
 
+def titles_sorted_by_rating(movies):
+    sorted_movies = sorted(movies, key=lambda movie: movie["rating"], reverse=True)
+    return [movie["title"] for movie in sorted_movies]
+
+
+def top_n_by_rating(movies, n=3):
+    sorted_movies = sorted(movies, key=lambda movie: movie["rating"], reverse=True)
+    return [(movie["title"], movie["rating"]) for movie in sorted_movies[:n]]
+
+
 def main():
     print(normalize_title("silent hours"))
     print(make_slug("The Quiet Algorithm"))
     print(format_report_line(movies[7]))
+    print(titles_sorted_by_rating(movies))
+    print(top_n_by_rating(movies, 3))
     print("Hello from dz-catalog-analysis-pereiaslavtseva-m26-555!")
 
 
