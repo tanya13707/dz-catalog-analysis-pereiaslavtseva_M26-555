@@ -64,20 +64,20 @@ def decade_label(year):
             return "старые"
 
 
-for movie in movies:
-    if "comedy" in movie["genres"]:
-        continue
-    print(movie["title"])
+def demonstrate_loops(movies):
+    for movie in movies:
+        if "comedy" in movie["genres"]:
+            continue
+        print(movie["title"])
 
-
-index = 0
-while index < len(movies):
-    if movies[index]["rating"] > 9.0:
-        print(movies[index]["title"])
-        break
-    index += 1
-else:
-    print("Шедевров не найдено")
+    index = 0
+    while index < len(movies):
+        if movies[index]["rating"] > 9.0:
+            print(movies[index]["title"])
+            break
+        index += 1
+    else:
+        print("Шедевров не найдено")
 
 
 def count_long_movies(movies, threshold=120):
@@ -186,6 +186,37 @@ def iter_high_rated(movies, min_rating=8.0):
             yield movie
 
 
+def build_report(movies):
+    average_age = catalog_age_stats(movies)[2]
+
+    print("ОТЧЕТ ПО КАТАЛОГУ")
+    print(f"Средний рейтинг: {average_rating(movies)}")
+    print(f"Средний возраст фильмов: {average_age} лет")
+    print()
+    print("Топ-3 фильма:")
+    for title, rating in top_n_by_rating(movies):
+        for movie in movies:
+            if movie["title"] == title:
+                print(f"  {format_report_line(movie)}")
+                break
+    print()
+    print("Фильмов по жанрам:")
+
+    genre_counts = count_by_genre(movies)
+    sorted_genres = sorted(genre_counts)
+    sorted_genres = sorted(
+        sorted_genres,
+        key=lambda genre: genre_counts[genre],
+        reverse=True,
+    )
+
+    for genre in sorted_genres:
+        print(f"  {genre} — {genre_counts[genre]}")
+    print()
+    genres = ", ".join(sorted(all_genres(movies)))
+    print(f"Все жанры каталога: {genres}")    
+
+
 def main():
     for movie in iter_high_rated(movies):
         print(format_report_line(movie))
@@ -206,4 +237,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    build_report(movies)
