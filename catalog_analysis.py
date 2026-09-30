@@ -124,7 +124,41 @@ def top_n_by_rating(movies, n=3):
     return [(movie["title"], movie["rating"]) for movie in sorted_movies[:n]]
 
 
+def count_by_genre(movies):
+    genre_counts = {}
+
+    for movie in movies:
+        for genre in movie["genres"]:
+            current_count = genre_counts.get(genre, 0)
+            genre_counts[genre] = current_count + 1
+
+    return genre_counts
+
+
+def actor_filmography(movies):
+    filmography = {}
+
+    for movie in movies:
+        for actor in movie["actors"]:
+            if actor not in filmography:
+                filmography[actor] = []
+            filmography[actor].append(movie["title"])
+
+    return filmography
+
+
+def ratings_above_average(movies):
+    average = average_rating(movies)
+
+    return {
+        movie["title"]: movie["rating"]
+        for movie in movies
+        if movie["rating"] > average
+    }
+
+
 def main():
+    print(ratings_above_average(movies))
     print(normalize_title("silent hours"))
     print(make_slug("The Quiet Algorithm"))
     print(format_report_line(movies[7]))
